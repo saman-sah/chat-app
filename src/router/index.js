@@ -8,12 +8,28 @@ const routes = [
     component: HomeView
   },
   {
-    path: '/about',
-    name: 'about',
+    path: '/user-page',
+    name: 'user-page',
     // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
+    // this generates a separate chunk (user-page.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
+    component: () => import(/* webpackChunkName: "user-page" */ '../views/UserPage.vue')
+  },
+  {
+    path: '/chat-page',
+    name: 'chat-page',
+    // route level code-splitting
+    // this generates a separate chunk (Chat-page.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "Chat-page" */ '../views/ChatPage.vue')
+  },
+  {
+    path: '/auth-page',
+    name: 'auth-page',
+    // route level code-splitting
+    // this generates a separate chunk (auth-page.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "auth-page" */ '../views/AuthPage.vue')
   }
 ]
 
