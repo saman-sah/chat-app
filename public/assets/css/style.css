@@ -93,11 +93,11 @@ nav h1 {
     flex-direction: column;
     width: 90%;
     height: 100%;
-    padding: 2em;
+    /* padding: 2em; */
     box-sizing: border-box;
     border-radius: 1rem;
     cursor: pointer;
-    background: white;
+    background: #F7F7F7;
     box-shadow: 0 0 8rem 0 rgba(0, 0, 0, 0.1), 2rem 2rem 4rem -3rem rgba(0, 0, 0, 0.5);
     margin: 2em auto;
 }
@@ -118,7 +118,8 @@ nav h1 {
 }
 
 
-.chat {
+.chat,
+.auth {
     position: relative;
     display: flex;
     flex-direction: column;
@@ -145,7 +146,8 @@ nav h1 {
     flex-direction: column;
     justify-content: end;
 } */
-.chat .messages {
+.chat .messages,
+.auth-content {
     display: flex;
     justify-self: flex-end;
     padding: 1rem;
@@ -153,7 +155,7 @@ nav h1 {
     overflow-y: auto;
     box-shadow: inset 0 2rem 2rem -2rem rgba(0, 0, 0, 0.05), inset 0 -2rem 2rem -2rem rgba(0, 0, 0, 0.05);
     flex-direction: column;
-    /* justify-content: flex-end;     */
+    height: 100%;
 }
 .chat .messages .time {
     font-size: 0.8rem;
@@ -170,7 +172,6 @@ nav h1 {
     box-sizing: border-box;
     padding: 0.5rem 1rem;
     margin: 1rem;
-    background: #FFF;
     border-radius: 1.125rem 1.125rem 1.125rem 0;
     min-height: fit-content;
     width: -webkit-fit-content;
@@ -179,11 +180,17 @@ nav h1 {
     max-width: 66%;
     box-shadow: 0 0 2rem rgba(0, 0, 0, 0.075), 0rem 1rem 1rem -1rem rgba(0, 0, 0, 0.1);
 }
-.chat .messages .message.parker {
+.chat .messages .message.sent {
     margin: 1rem 1rem 1rem auto;
     border-radius: 1.125rem 1.125rem 0 1.125rem;
     background: #333;
     color: white;
+}
+.chat .messages .message.received {
+    margin: 1rem ;
+    border-radius: 1.125rem 1.125rem 0 1.125rem;
+    background: #fff;
+    color: #333;
 }
 .chat .messages .message .typing {
     display: inline-block;
@@ -224,7 +231,8 @@ nav h1 {
 .chat .input i:hover {
     color: #333;
 }
-.chat .input input {
+.chat .input input,
+.auth-content form input {
     border: none;
     background-image: none;
     background-color: white;
@@ -237,23 +245,70 @@ nav h1 {
     font-weight: 400;
     letter-spacing: 0.025em;
 }
-.chat .input input:placeholder {
+.chat .input input:placeholder,
+.auth-content form input:placeholder {
     color: #999;
 }
 
 
-.pic.stark {
-    background-image: url("https://vignette.wikia.nocookie.net/marvelcinematicuniverse/images/7/73/SMH_Mentor_6.png");
+.pages-nav {
+    display: flex;
+    justify-content: space-between;
+    padding: 1em;
+    background-color: #ffffff;
+    border-radius: 1em 1em 0 0;
+}
+.pages-nav .name{
+    font-weight: 500;
+}
+.form-send-msg,
+.form-login-register {
+    padding: 1em;
+}
+.btn-send-msg{
+    background: none;
+    border: none;
+    outline: none;
 }
 
-.pic.banner {
-    background-image: url("https://vignette.wikia.nocookie.net/marvelcinematicuniverse/images/4/4f/BruceHulk-Endgame-TravelingCapInPast.jpg");
-}
 
-.pic.thor {
-    background-image: url("https://vignette.wikia.nocookie.net/marvelcinematicuniverse/images/9/98/ThorFliesThroughTheAnus.jpg");
-}
 
-.pic.rogers {
-    background-image: url("https://vignette.wikia.nocookie.net/marvelcinematicuniverse/images/7/7c/Cap.America_%28We_Don%27t_Trade_Lives_Vision%29.png");
+/* Auth Page */
+.auth-content form{
+    display: flex;
+    flex-direction: column;
+    gap: 2em;
 }
+.auth-content form input {
+    padding: 1em 2em;
+}
+/* Auth Page Buttons */
+.auth button {
+    border-radius: 1em;
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1), 0rem 1rem 1rem -1rem rgba(0, 0, 0, 0.2);
+    border: 1px solid #ccc;
+}
+.auth button:hover {
+    background: #333;
+    color: #fff;
+    cursor: pointer;
+}
+.btn-select-login,
+.btn-select-register {
+    width: 40%;
+    padding: 0.5em 1em;    
+}
+.form-login-register button {
+    width: 100%;
+    padding: 1em;
+}
+.btns-login-register {
+    box-sizing: border-box;
+    flex-basis: 4rem;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    padding: 0 0.5rem 0 1.5rem;
+    justify-content: center;
+}
+/* End----------- Auth Page Buttons */

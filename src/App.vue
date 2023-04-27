@@ -1,8 +1,4 @@
 <template>
-  <nav>
-    <h1>{{ titlePage }}</h1>
-  </nav>
-  <hr>
   <router-view/>
 </template>
 <script>

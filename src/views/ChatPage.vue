@@ -1,65 +1,71 @@
 <template>
     <div class="chat">
-        <div class="contact bar">
-            <div class="pic stark"></div>
+        <div class="pages-nav">
+            <div class="back-icon" @click="$router.go(-1)">
+                <i class="fa fa-arrow-left"></i>
+            </div>
             <div class="name">
                 Tony Stark
             </div>
-            <div class="seen">
-                Today at 12:56
+            <div></div>
+        </div>
+
+        <div class="messages" id="chat">
+            <div v-for="(message, index) in messages"
+            :key="index" 
+            :class="['message' ,message.from]">
+                {{ message.text }}
             </div>
         </div>
 
-            <div class="messages" id="chat">
-                <div class="message parker">
-                    Hey, man! What's up, Mr Stark?&nbsp;👋
-                </div>
-                <div class="message stark">
-                    Kid, where'd you come from? 
-                </div>
-                <div class="message parker">
-                    Hey, man! What's up, Mr Stark?&nbsp;👋
-                </div>
-                <div class="message stark">
-                    Kid, where'd you come from? 
-                </div>
-                <div class="message parker">
-                    Hey, man! What's up, Mr Stark?&nbsp;👋
-                </div>
-                <div class="message stark">
-                    Kid, where'd you come from? 
-                </div>
-                <div class="message parker">
-                    Field trip! 🤣
-                </div>
-                <div class="message parker">
-                    Hey, man! What's up, Mr Stark?&nbsp;👋
-                </div>
-                <div class="message stark">
-                    Kid, where'd you come from? 
-                </div>
-                <div class="message parker">
-                    Field trip! 🤣
-                </div>
-                <div class="message stark">
-                    new 
-                </div>
-                <div class="message parker">
-                    new parker
-                </div>
+        <form class="form-send-msg" @submit.prevent="sendMesssage()">
+            <div class="input">
+                <input v-model="newMessage"
+                placeholder="Type your message here!" type="text">
+                <button type="submit" class="btn-send-msg">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+                
             </div>
-
+        </form>
         
-        <div class="input">
-            <input placeholder="Type your message here!" type="text">
-            <i class="fas fa-paper-plane"></i>
-        </div>
     </div>
 </template>
 
 <script>
 export default {
-
+    data() {
+        return {
+            newMessage: '',
+            messages: [
+                {
+                    text: 'Salam khubi?',
+                    from: 'sent'
+                },
+                {
+                    text: 'Salam, khubam to khubi?',
+                    from: 'received'
+                },
+                {
+                    text: 'manam khubam',
+                    from: 'sent'
+                },
+                {
+                    text: 'che khabar?',
+                    from: 'received'
+                },
+            ]
+        }
+    },
+    methods: {
+        sendMesssage() {
+            this.messages.push({
+                text: this.newMessage,
+                from: 'sent'
+            })
+            this.newMessage= '';
+        }
+    },
 }
 </script>
 
