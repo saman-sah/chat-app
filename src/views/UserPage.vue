@@ -4,9 +4,13 @@
             <div class="name">
                 Contacts
             </div>
+            <div class="btn-log-out">
+                <button @click="logOut">Logout</button>
+            </div>
         </div>
+       
         <div class="contacts-item">
-            <div v-for="(user, index) in users" :key="index" class="contact">
+            <div v-for="(user, key) in users" :key="key" class="contact">
                 <div class="pic danvers">
                     <h1>{{user.name.charAt(0)}}</h1>
                 </div>
@@ -26,27 +30,18 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex'
 export default {
-    data() {
-        return {
-            users:[
-                {
-                    id: 1,
-                    name: "saman",
-                    online: false
-                },
-                {
-                    id: 2,
-                    name: "sadra",
-                    online: true
-                },
-                {
-                    id: 3,
-                    name: "sahar",
-                    online: false
-                },
-            ]
-        }
+    computed: {
+        ...mapGetters([
+            'users'
+        ])
+    },
+
+    methods: {
+        ...mapActions({
+            logOut: 'logOut'
+        })
     },
 }
 </script>

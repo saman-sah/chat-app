@@ -2,14 +2,15 @@
   <router-view/>
 </template>
 <script>
+import { mapActions, mapState } from 'vuex';
   export default {
-    computed: {
-      titlePage() {
-        let path= this.$route.path 
-        if(path == "/user-page") return 'Users'
-        if(path == "/chat-page") return 'Chat'
-        if(path == "/auth-page") return 'Login / Register'
-      }
-    }
+    mounted() {
+      this.fetchUser();
+    },
+    methods: {
+        ...mapActions({
+            fetchUser: 'handleAuthStateChange',
+        })
+    },
   }
 </script>
