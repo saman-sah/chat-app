@@ -274,13 +274,16 @@ nav h1 {
 
 
 /* Auth Page */
-.auth-content form{
+.auth-content,
+.auth-content .form-login-register {
     display: flex;
     flex-direction: column;
     gap: 2em;
 }
-.auth-content form input {
+.auth-content input {
     padding: 1em 2em;
+    border-radius: 1em;
+    border: 1px solid #ccc;
 }
 /* Auth Page Buttons */
 .auth button {
