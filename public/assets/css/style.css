@@ -57,10 +57,16 @@ nav h1 {
     font-weight: 500;
     margin-bottom: 0.125rem;
     text-align: left;
-    height: 60%;
+    width: 100%;
     display: block;
     line-height: 2.5;
 }
+.contacts-item {
+    padding: 1em;
+    height: 100%;
+    overflow: auto;
+}
+
 .user-name-link h4 {    
     margin: 0;
 }

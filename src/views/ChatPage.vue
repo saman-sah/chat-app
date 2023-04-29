@@ -5,7 +5,6 @@
                 <i class="fa fa-arrow-left"></i>
             </div>
             <div class="name">
-                Tony Stark
             </div>
             <div></div>
         </div>
@@ -33,31 +32,29 @@
 </template>
 
 <script>
+import { mapActions, mapState } from 'vuex';
 export default {
     data() {
         return {
             newMessage: '',
-            messages: [
-                {
-                    text: 'Salam khubi?',
-                    from: 'sent'
-                },
-                {
-                    text: 'Salam, khubam to khubi?',
-                    from: 'received'
-                },
-                {
-                    text: 'manam khubam',
-                    from: 'sent'
-                },
-                {
-                    text: 'che khabar?',
-                    from: 'received'
-                },
-            ]
         }
     },
+    mounted() {
+        this.getMessages(this.$route.params.otherUserId)
+    },
+    unmounted() {
+        this.stopGettingMessages();
+    },
+    computed: {
+        ...mapState([
+            'messages'
+        ])
+    },
     methods: {
+        ...mapActions({
+            getMessages: 'getMessages',
+            stopGettingMessages: 'stopGettingMessages'
+        }),
         sendMesssage() {
             this.messages.push({
                 text: this.newMessage,

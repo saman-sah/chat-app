@@ -6,21 +6,32 @@ import {
   ref, 
   onValue, 
   set,
+  off,
   update,
+  onChildAdded,
+  onChildChanged,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
 } from '../firebase'
+let messagesRef
 export default createStore({
   state: {
     base_url: "http://localhost:3000/",
     currentUser: {},
     userInfo: {},
-    users: {}
+    users: {},
+    messages: {}
   },
   getters: {
     users:state=> {
-      return state.users
+      let usersFiltered= {};
+      Object.keys(state.users).forEach(key=> {
+        if(key!== state.userInfo.userId) {
+          usersFiltered[key]= state.users[key]
+        }
+      })
+      return usersFiltered
     }
   },
   mutations: {
@@ -30,16 +41,21 @@ export default createStore({
     },
     //End--------- SetUser 
     
-    SET_USERS(state, users){
-      state.users= users;
-      console.log('users');
-      console.log(state.users);
+    ADD_USERS(state, user){
+      state.users[user.userId]= user.userDetails;
+    },
+
+    ADD_MESSAGES(state, message) {
+      state.messages[message.messageId]= message.messageDetails;
+    },
+
+    CLEAR_MESSAGES(state) {
+      state.messages= {}
     },
 
     //SetUserInfo 
     SET_USER_INFO(state, userInfo) {
       state.userInfo= userInfo;
-      router.push({path:'/user-page'})
     },
     //End--------- SetUserInfo
   
@@ -51,21 +67,7 @@ export default createStore({
     //End--------- ClearUser 
   },
   actions: {
-    // getData(){
-    //   set(ref(db, 'users/'+ 123455), {
-    //     name: 'saman',
-    //     email: 'saman@gmail.com',
-    //     online: true
-    //   });
-      // onValue(ref(db, 'users'), (snapshot) => {
-      //   const data = snapshot.val();
-      //   console.log('database users');
-      //   console.log(data);
-      // });
-    // },
     register({  commit }, userData) {
-      console.log('regist');
-      console.log(userData);
       createUserWithEmailAndPassword(auth, userData.email, userData.password)
       .then(response=> {
           let userId= auth.currentUser.uid     
@@ -100,11 +102,8 @@ export default createStore({
       
     },
     login({ commit }, userData) {
-      console.log('login');
-      console.log(userData);
         signInWithEmailAndPassword(auth, userData.email, userData.password)
         .then(response=> {
-          console.log('response login');
             commit("SET_USER", response.user);
         })
         .catch(error=> {
@@ -133,27 +132,33 @@ export default createStore({
     //End--------- Logout Firebase Auth
     
     // Check User Logged In
-    handleAuthStateChange({commit}, state) {
+    handleAuthStateChange({ commit, dispatch, state }) {
       auth.onAuthStateChanged(user=> {
         if(user) {
           let userId= auth.currentUser.uid  
           onValue(ref(db, 'users/' + userId), (snapshot) => {
-            const data = snapshot.val();
-            commit("SET_USER_INFO", data);
-            this.dispatch('updateUser', {
-              userId: userId,
-              updates: {
-                online: true
-              }
-            })
+            const userData = snapshot.val();
+            commit("SET_USER_INFO", {
+              name: userData.name,
+              email: userData.email,
+              userId: userId
+            });       
+          }, {
+            onlyOnce: true
           });
-         
-          this.dispatch('getUsers');
-          commit("SET_USER", user);              
+          commit("SET_USER", user);
+          dispatch('updateUser', {
+            userId: userId,
+            updates: {
+              online: true
+            }
+          })
+          dispatch('getUsers', userId);
+          router.push('/user-page')            
         }else {
-          if(this.state.currentUser.uid){
-            this.dispatch('updateUser', {
-              userId: this.state.currentUser.uid,
+          if(state.currentUser.uid){
+            dispatch('updateUser', {
+              userId: state.currentUser.uid,
               updates: {
                 online: false
               }
@@ -161,22 +166,53 @@ export default createStore({
           }
           
           commit("CLEAR_USER");
+          router.replace('/auth-page')  
         }
       })
     },
     //End--------- Check User Logged In
 
-    updateUser(dataUpdated) {
-      // console.log('dataUpdated');
-      // console.log(dataUpdated);
-      update(ref(db, 'users/' + dataUpdated.userId), dataUpdated.updates);
+    updateUser({},userUpdated) {
+      update(ref(db, 'users/' + userUpdated.userId), userUpdated.updates);
     },
-    getUsers({ commit }){
-      onValue(ref(db, 'users'), (snapshot) => {
-        const data = snapshot.val();
-        commit("SET_USERS", data);
+    getUsers({ commit }, currentUserId){
+      onChildAdded(ref(db, 'users'), (snapshot) => {
+        const userId = snapshot.key;
+        const userDetails = snapshot.val();
+        if(userId != currentUserId){
+          commit("ADD_USERS", {
+            userId,
+            userDetails
+          });
+        }
+      });
+      onChildChanged(ref(db, 'users'), (snapshot) => {
+        const userId = snapshot.key;
+        const userDetails = snapshot.val();
+        commit("ADD_USERS", {
+          userId,
+          userDetails
+        });
       });
     },
+    getMessages({ commit, state }, otherUserId) {
+      let userId= state.userInfo.userId;
+      messagesRef=ref(db, 'chats/'+ userId + '/' + otherUserId)
+      onChildAdded(messagesRef, (snapshot) => {
+        const messageId = snapshot.key;
+        const messageDetails = snapshot.val();
+        commit("ADD_MESSAGES", {
+          messageId,
+          messageDetails
+        });
+      });
+    },
+    stopGettingMessages({ commit }) {
+      if(messagesRef) {
+        off(messagesRef);
+        commit("CLEAR_MESSAGES")
+      }
+    }
   },
   modules: {
   }

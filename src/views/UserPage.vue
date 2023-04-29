@@ -4,7 +4,7 @@
             <div class="name">
                 Contacts
             </div>
-            <div class="btn-log-out">
+            <div v-if="currentUser && currentUser.auth" class="btn-log-out">
                 <button @click="logOut">Logout</button>
             </div>
         </div>
@@ -16,7 +16,7 @@
                 </div>
                 <div class="badge" :style="{'background-color': user.online ? '#38d938' : 'red'}"></div>
                 <div class="name user-name-link">
-                    <router-link to="/chat-page">
+                    <router-link :to="'/chat-page/'+ key">
                         <h4>{{ user.name }}</h4>
                     </router-link>
                 </div>
@@ -30,11 +30,14 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions, mapGetters, mapState } from 'vuex'
 export default {
     computed: {
+        ...mapState([
+            'currentUser'
+        ]),
         ...mapGetters([
-            'users'
+            'users',            
         ])
     },
 
@@ -47,8 +50,6 @@ export default {
 </script>
 
 <style>
-.contacts-item {
-    padding: 1em;
-}
+
 
 </style>
