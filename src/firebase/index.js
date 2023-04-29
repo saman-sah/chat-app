@@ -11,7 +11,10 @@ import {
   ref, 
   onValue, 
   set,
-  update 
+  update,
+  off,
+  onChildAdded,
+  onChildChanged
 } from "firebase/database";
 
 
@@ -27,8 +30,6 @@ const firebaseConfig = {
 let firebaseApp = firebase.initializeApp(firebaseConfig);
 let auth= getAuth(firebaseApp);
 let db= getDatabase(firebaseApp);
-console.log('auth');
-console.log(auth);
 export { 
     auth, 
     db, 
@@ -36,6 +37,9 @@ export {
     ref, 
     onValue, 
     set,
+    off,
+    onChildAdded,
+    onChildChanged,
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
     signOut
