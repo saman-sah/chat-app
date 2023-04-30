@@ -78,7 +78,8 @@ nav h1 {
     color: #999;
     text-align: left;
 }
-.contact .badge {
+.contact .badge,
+.user-chat-title .badge {
     box-sizing: border-box;
     position: absolute;
     width: 1rem;
