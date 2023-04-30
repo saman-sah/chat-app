@@ -37,7 +37,11 @@ const routes = [
     // this generates a separate chunk (auth-page.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "auth-page" */ '../views/AuthPage.vue')
-  }
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    redirect: '/'
+  },
 ]
 
 const router = createRouter({
