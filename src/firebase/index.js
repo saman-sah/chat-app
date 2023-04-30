@@ -13,6 +13,9 @@ import {
   set,
   update,
   off,
+  push,
+  get,
+  child,
   onChildAdded,
   onChildChanged
 } from "firebase/database";
@@ -38,6 +41,9 @@ export {
     onValue, 
     set,
     off,
+    push,
+    get,
+    child,
     onChildAdded,
     onChildChanged,
     createUserWithEmailAndPassword,

@@ -4,16 +4,30 @@
             <div class="back-icon" @click="$router.go(-1)">
                 <i class="fa fa-arrow-left"></i>
             </div>
-            <div class="name">
+            <div class="name user-chat-title">
+                {{ otherUserInfo.name }}
+                <div :style="{'background-color': otherUserInfo.online ? '#38d938' : 'red'}"
+                class="badge" ></div>
             </div>
             <div></div>
         </div>
 
         <div class="messages" id="chat">
+            
             <div v-for="(message, index) in messages"
             :key="index" 
             :class="['message' ,message.from]">
-                {{ message.text }}
+                <sup v-if="message.from== 'sent'" 
+                class="name-user-messages">
+                    {{ userInfo.name }}
+                </sup>
+                <sup v-else 
+                class="name-user-messages">
+                    {{ otherUserInfo.name }}
+                </sup>
+                <span>
+                    {{ message.text }}
+                </span>
             </div>
         </div>
 
@@ -47,18 +61,29 @@ export default {
     },
     computed: {
         ...mapState([
-            'messages'
-        ])
+            'messages',
+            'userInfo'
+        ]),
+        otherUserInfo() {
+            if(this.$store.state.users[this.$route.params.otherUserId]) {
+                return this.$store.state.users[this.$route.params.otherUserId]
+            }
+            return {} 
+        }
     },
     methods: {
         ...mapActions({
             getMessages: 'getMessages',
-            stopGettingMessages: 'stopGettingMessages'
+            stopGettingMessages: 'stopGettingMessages',
+            actionSendMessage: 'actionSendMessage'
         }),
         sendMesssage() {
-            this.messages.push({
-                text: this.newMessage,
-                from: 'sent'
+            this.actionSendMessage({
+                message: {
+                    text: this.newMessage,
+                    from: 'sent'
+                },
+                otherUserId: this.$route.params.otherUserId    
             })
             this.newMessage= '';
         }
@@ -67,5 +92,19 @@ export default {
 </script>
 
 <style>
-
+.message,
+.user-chat-title {
+    position: relative;
+}
+.name-user-messages {
+    position: absolute;
+    top: -1em;
+    color: #333;
+}
+.sent .name-user-messages {
+    right: 0;
+}
+.recieved .name-user-messages {
+    left: 0;
+}
 </style>

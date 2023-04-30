@@ -2,7 +2,7 @@
   <router-view/>
 </template>
 <script>
-import { mapActions, mapState } from 'vuex';
+import { mapActions } from 'vuex';
   export default {
     mounted() {
       this.fetchUser();

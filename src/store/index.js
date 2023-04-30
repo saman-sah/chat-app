@@ -7,7 +7,10 @@ import {
   onValue, 
   set,
   off,
+  push,
   update,
+  get,
+  child,
   onChildAdded,
   onChildChanged,
   createUserWithEmailAndPassword,
@@ -67,7 +70,7 @@ export default createStore({
     //End--------- ClearUser 
   },
   actions: {
-    register({  commit }, userData) {
+    register({  commit, dispatch }, userData) {
       createUserWithEmailAndPassword(auth, userData.email, userData.password)
       .then(response=> {
           let userId= auth.currentUser.uid     
@@ -75,7 +78,9 @@ export default createStore({
             name: userData.name,
             email: userData.email,
             online: true
-          });
+          }).then(()=> {
+            dispatch('handleAuthStateChange')
+          })
           commit("SET_USER", response.user);
       })
       .catch(error=> {
@@ -135,16 +140,24 @@ export default createStore({
     handleAuthStateChange({ commit, dispatch, state }) {
       auth.onAuthStateChanged(user=> {
         if(user) {
-          let userId= auth.currentUser.uid  
-          onValue(ref(db, 'users/' + userId), (snapshot) => {
-            const userData = snapshot.val();
-            commit("SET_USER_INFO", {
-              name: userData.name,
-              email: userData.email,
-              userId: userId
-            });       
-          }, {
-            onlyOnce: true
+          let userId= auth.currentUser.uid 
+          get(child(ref(db), `users/${userId}`))
+          .then((snapshot) => {
+            if (snapshot.exists()) {
+              console.log('ecist snapshot.val()');
+              console.log(snapshot.val());
+              const userData = snapshot.val();
+              commit("SET_USER_INFO", {
+                name: userData.name,
+                email: userData.email,
+                userId: userId
+              }); 
+            } else {
+              console.log("No data available");
+            }
+          })
+          .catch((error) => {
+            console.error(error);
           });
           commit("SET_USER", user);
           dispatch('updateUser', {
@@ -196,11 +209,17 @@ export default createStore({
       });
     },
     getMessages({ commit, state }, otherUserId) {
+      console.log('get messages');
       let userId= state.userInfo.userId;
+      console.log(userId);
+      console.log(otherUserId);
       messagesRef=ref(db, 'chats/'+ userId + '/' + otherUserId)
-      onChildAdded(messagesRef, (snapshot) => {
+      onChildAdded(ref(db, 'chats/'+ userId + '/' + otherUserId), (snapshot) => {
+        
         const messageId = snapshot.key;
         const messageDetails = snapshot.val();
+        console.log(messageId);
+        console.log(messageDetails);
         commit("ADD_MESSAGES", {
           messageId,
           messageDetails
@@ -212,6 +231,19 @@ export default createStore({
         off(messagesRef);
         commit("CLEAR_MESSAGES")
       }
+    },
+    actionSendMessage({ commit, state }, messageData) {
+      console.log(messageData);
+      let userId= state.userInfo.userId;
+      set(push(ref(db, 'chats/'+ userId + '/' + messageData.otherUserId)), {
+        text: messageData.message.text,
+        from: messageData.message.from
+      });
+      messageData.message.from= 'recieved'
+      set(push(ref(db, 'chats/'+ messageData.otherUserId + '/' + userId)), {
+        text: messageData.message.text,
+        from: messageData.message.from
+      });
     }
   },
   modules: {
