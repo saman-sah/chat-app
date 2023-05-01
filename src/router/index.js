@@ -49,16 +49,16 @@ const router = createRouter({
   routes
 })
 
-router.beforeEach((to, from, next)=> {
-  if(to.matched.some((record)=> record.meta.requireAuth)) {
-    if(getAuth().currentUser) {
-      next();
-    }else {
-      alert("you have to login");
-      next("/auth-page")
-    }
-  }else {
-    next();
-  }
-})
+// router.beforeEach((to, from, next)=> {
+//   if(to.matched.some((record)=> record.meta.requireAuth)) {
+//     if(getAuth().currentUser) {
+//       next();
+//     }else {
+//       alert("you have to login");
+//       next("/auth-page")
+//     }
+//   }else {
+//     next();
+//   }
+// })
 export default router

@@ -178,7 +178,7 @@ nav h1 {
 .chat .messages .message {
     box-sizing: border-box;
     padding: 0.5rem 1rem;
-    margin: 1rem;
+    margin: 2rem 1rem 1rem 1rem;
     border-radius: 1.125rem 1.125rem 1.125rem 0;
     min-height: fit-content;
     width: -webkit-fit-content;
@@ -188,13 +188,13 @@ nav h1 {
     box-shadow: 0 0 2rem rgba(0, 0, 0, 0.075), 0rem 1rem 1rem -1rem rgba(0, 0, 0, 0.1);
 }
 .chat .messages .message.sent {
-    margin: 1rem 1rem 1rem auto;
+    margin: 2rem 1rem 1rem auto;
     border-radius: 1.125rem 1.125rem 0 1.125rem;
     background: #333;
     color: white;
 }
 .chat .messages .message.received {
-    margin: 1rem ;
+    margin: 2rem 1rem 1rem auto;
     border-radius: 1.125rem 1.125rem 0 1.125rem;
     background: #fff;
     color: #333;

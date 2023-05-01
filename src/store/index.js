@@ -144,8 +144,6 @@ export default createStore({
           get(child(ref(db), `users/${userId}`))
           .then((snapshot) => {
             if (snapshot.exists()) {
-              console.log('ecist snapshot.val()');
-              console.log(snapshot.val());
               const userData = snapshot.val();
               commit("SET_USER_INFO", {
                 name: userData.name,
@@ -209,17 +207,12 @@ export default createStore({
       });
     },
     getMessages({ commit, state }, otherUserId) {
-      console.log('get messages');
       let userId= state.userInfo.userId;
-      console.log(userId);
-      console.log(otherUserId);
       messagesRef=ref(db, 'chats/'+ userId + '/' + otherUserId)
       onChildAdded(ref(db, 'chats/'+ userId + '/' + otherUserId), (snapshot) => {
         
         const messageId = snapshot.key;
         const messageDetails = snapshot.val();
-        console.log(messageId);
-        console.log(messageDetails);
         commit("ADD_MESSAGES", {
           messageId,
           messageDetails
@@ -233,7 +226,6 @@ export default createStore({
       }
     },
     actionSendMessage({ commit, state }, messageData) {
-      console.log(messageData);
       let userId= state.userInfo.userId;
       set(push(ref(db, 'chats/'+ userId + '/' + messageData.otherUserId)), {
         text: messageData.message.text,

@@ -12,23 +12,25 @@
             <div></div>
         </div>
 
-        <div class="messages" id="chat">
-            
-            <div v-for="(message, index) in messages"
-            :key="index" 
-            :class="['message' ,message.from]">
-                <sup v-if="message.from== 'sent'" 
-                class="name-user-messages">
-                    {{ userInfo.name }}
-                </sup>
-                <sup v-else 
-                class="name-user-messages">
-                    {{ otherUserInfo.name }}
-                </sup>
-                <span>
-                    {{ message.text }}
-                </span>
+        <div class="messages" id="chat" ref="chat_wrap">
+            <div :style="{'opacity': showMsgs ? 1 : 0}">
+                <div v-for="(message, key) in messages"
+                :key="key" 
+                :class="['message' ,message.from]">
+                    <sup v-if="message.from== 'sent'" 
+                    class="name-user-messages">
+                        {{ userInfo.name }}
+                    </sup>
+                    <sup v-else 
+                    class="name-user-messages">
+                        {{ otherUserInfo.name }}
+                    </sup>
+                    <span>
+                        {{ message.text }}
+                    </span>
+                </div>
             </div>
+            
         </div>
 
         <form class="form-send-msg" @submit.prevent="sendMesssage()">
@@ -51,6 +53,7 @@ export default {
     data() {
         return {
             newMessage: '',
+            showMsgs: false
         }
     },
     mounted() {
@@ -58,6 +61,21 @@ export default {
     },
     unmounted() {
         this.stopGettingMessages();
+    },
+    watch: {
+        messages: {
+            handler(newMsg) {
+                if(Object.keys(newMsg).length) {
+                    this.scrollToBottom();
+                    setTimeout(() => {
+                        this.showMsgs= true
+                    }, 200);
+                }
+            },
+            immediate: true,
+            deep: true
+        }
+            
     },
     computed: {
         ...mapState([
@@ -86,6 +104,12 @@ export default {
                 otherUserId: this.$route.params.otherUserId    
             })
             this.newMessage= '';
+        },
+        scrollToBottom(){
+            let chatWrap= this.$refs.chat_wrap
+            setTimeout(() => {
+                chatWrap.scrollTop = chatWrap.scrollHeight                
+            }, 20);
         }
     },
 }
@@ -98,7 +122,7 @@ export default {
 }
 .name-user-messages {
     position: absolute;
-    top: -1em;
+    top: -10px;
     color: #333;
 }
 .sent .name-user-messages {
