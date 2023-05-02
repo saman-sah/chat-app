@@ -1,7 +1,7 @@
 <template>
-    <div class="contacts">
+    <div class="contacts contacts-page">
         <div class="pages-nav">
-            <div class="name">
+            <div class="name contacts-title">
                 Contacts
             </div>
             <div v-if="currentUser && currentUser.auth" class="btn-log-out">
@@ -12,15 +12,16 @@
         <div class="contacts-item">
             <div v-for="(user, key) in users" :key="key" class="contact">
                 <div class="pic danvers">
-                    <h1>{{user.name.charAt(0)}}</h1>
+                    <h4>{{user.name.charAt(0)}}</h4>
+                    <div class="badge" :style="{'background-color': user.online ? '#ffa31a' : '#1b1b1b'}"></div>
                 </div>
-                <div class="badge" :style="{'background-color': user.online ? '#38d938' : 'red'}"></div>
+                
                 <div class="name user-name-link">
                     <router-link :to="'/chat-page/'+ key">
                         <h4>{{ user.name }}</h4>
                     </router-link>
                 </div>
-                <div class="badge-status" :style="{'background-color': user.online ? '#38d938' : 'red'}">
+                <div class="badge-status" :style="{'color': user.online ? '#ffa31a' : '#dadada'}">
                     <span>{{ user.online ? 'Online' : 'Offline'}}</span>
                 </div>
             </div>
