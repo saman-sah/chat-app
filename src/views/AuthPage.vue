@@ -9,12 +9,18 @@
             </div>
         </div>
         <div v-else class="pages-nav">
-            <button :style="{ backgroundColor: login_register== 'login' ? '#aaa' : '' }"
+            <button :style="{ 
+                backgroundColor: login_register== 'login' ? '#ffa31a' : '#1b1b1b',
+                border: login_register== 'login' ? '2px solid #1b1b1b' : ''
+            }"
             @click="login_register= 'login'" 
             type="submit" class="btn-select-login">
                 Login
             </button>                
-            <button :style="{ backgroundColor: login_register== 'register' ? '#aaa' : '' }"
+            <button :style="{ 
+                backgroundColor: login_register== 'register' ? '#ffa31a' : '#1b1b1b' ,
+                border: login_register== 'register' ? '2px solid #1b1b1b' : ''
+            }"
             @click="login_register= 'register'" 
             type="submit" class="btn-select-register">
                 Register

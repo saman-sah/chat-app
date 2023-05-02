@@ -1,12 +1,12 @@
 <template>
-    <div class="chat">
+    <div class="chat chat-page" id="chat-page">
         <div class="pages-nav">
             <div class="back-icon" @click="$router.go(-1)">
                 <i class="fa fa-arrow-left"></i>
             </div>
             <div class="name user-chat-title">
                 {{ otherUserInfo.name }}
-                <div :style="{'background-color': otherUserInfo.online ? '#38d938' : 'red'}"
+                <div :style="{'background-color': otherUserInfo.online ? '#ffa31a' : '#1b1b1b'}"
                 class="badge" ></div>
             </div>
             <div></div>
@@ -38,7 +38,8 @@
                 <input v-model="newMessage"
                 placeholder="Type your message here!" type="text">
                 <button type="submit" class="btn-send-msg">
-                    <i class="fas fa-paper-plane"></i>
+                    <i :style="{ 'color': newMessage=='' ? '#1b1b1b' : '#ffa31a'}"
+                    class="fas fa-paper-plane"></i>
                 </button>
                 
             </div>
@@ -116,19 +117,5 @@ export default {
 </script>
 
 <style>
-.message,
-.user-chat-title {
-    position: relative;
-}
-.name-user-messages {
-    position: absolute;
-    top: -10px;
-    color: #333;
-}
-.sent .name-user-messages {
-    right: 0;
-}
-.recieved .name-user-messages {
-    left: 0;
-}
+
 </style>
