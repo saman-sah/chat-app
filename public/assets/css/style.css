@@ -235,15 +235,15 @@ nav h1 {
     font-size: 1.5em;
     text-align: center;
     margin: 0;
-    line-height: 2;
+    line-height: 2.75;
 }
 .contacts-page .user-name-link h4 {    
     margin: 0;
     color: #ffffff;
 }
 .contacts-page .pic {
-    width: 3rem;
-    height: 3rem;
+    width: 4rem;
+    height: 4rem;
     background-size: cover;
     background-position: center;
     border-radius: 50%;
@@ -276,6 +276,7 @@ nav h1 {
     width: 100%;
     display: block;
     line-height: 2.5;
+    padding-left: 1em;
 }
 .contacts-item {
     padding: 1em;

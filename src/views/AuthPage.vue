@@ -41,6 +41,8 @@
             <input type="password" v-model="userData.password" 
             name="password" placeholder="Password"
             autocomplete="off">
+            <input v-if="login_register== 'register'" type="file" 
+            ref="user_image_file" @change="selectedImage($event)">
         </div>
 
         <div v-if="currentUser && currentUser.auth" class="form-login-register" >
@@ -53,7 +55,7 @@
                     Login
                 </button>                
                 <button v-else 
-                @click="register(userData)" class="btn-register">
+                @click="registerValidatation(userData)" class="btn-register">
                     Register
                 </button>                
             </div>
@@ -67,8 +69,13 @@ import { mapActions, mapState } from "vuex";
 export default {
     data() {
         return {
-            userData:{},
-            login_register: 'login'
+            userData:{
+                name:'',
+                email: '',
+                password: '',
+                user_avatar: {}
+            },
+            login_register: 'login',
         }
     },
     computed: {
@@ -81,8 +88,26 @@ export default {
         ...mapActions({
             register: 'register',
             login: 'login',
-            logOut: 'logOut'
+            logOut: 'logOut',
         }),
+        selectedImage(e) {
+            this.userData.user_avatar= e.target.files[0]
+        },
+        registerValidatation(userData) {
+            if(userData.name.length < 3) {
+                console.log('Write the correct name');
+            }else if(!userData.email.length) {
+                console.log('Enter your eamil');
+            }else if( !userData.user_avatar.size) {
+                console.log('choose your profile image');
+            }else {
+                if(userData.user_avatar.size > 300000) {
+                    console.log('You shoud select smaller size image');
+                }else {
+                    this.register(this.userData)
+                }
+            }
+        }
     },
 }
 </script>

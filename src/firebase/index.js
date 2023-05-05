@@ -7,6 +7,12 @@ import {
   signOut 
 } from "firebase/auth";
 import { 
+  getStorage, 
+  ref as storageRef,
+  uploadBytes,
+  getDownloadURL,
+} from "firebase/storage";
+import { 
   getDatabase, 
   ref, 
   onValue, 
@@ -33,9 +39,11 @@ const firebaseConfig = {
 let firebaseApp = firebase.initializeApp(firebaseConfig);
 let auth= getAuth(firebaseApp);
 let db= getDatabase(firebaseApp);
+let storage= getStorage(firebaseApp)
 export { 
     auth, 
     db, 
+    storage,
     update,
     ref, 
     onValue, 
@@ -48,5 +56,8 @@ export {
     onChildChanged,
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
-    signOut
+    signOut,
+    storageRef,
+    uploadBytes,
+    getDownloadURL,
 }
