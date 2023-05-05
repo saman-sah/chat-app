@@ -11,7 +11,10 @@
        
         <div class="contacts-item">
             <div v-for="(user, key) in users" :key="key" class="contact">
-                <div class="pic danvers">
+                <div v-if="user.image" class="pic danvers" :style="{'background-image': user.image ? 'url('+user.image+')' : ''}">
+                    <div class="badge" :style="{'background-color': user.online ? '#ffa31a' : '#1b1b1b'}"></div>
+                </div>
+                <div v-else class="pic danvers">
                     <h4>{{user.name.charAt(0)}}</h4>
                     <div class="badge" :style="{'background-color': user.online ? '#ffa31a' : '#1b1b1b'}"></div>
                 </div>

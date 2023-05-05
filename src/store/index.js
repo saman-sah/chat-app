@@ -16,6 +16,10 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
+  storageRef,
+  storage,
+  uploadBytes,
+  getDownloadURL,
 } from '../firebase'
 let messagesRef
 export default createStore({
@@ -79,7 +83,35 @@ export default createStore({
             email: userData.email,
             online: true
           }).then(()=> {
-            dispatch('handleAuthStateChange')
+            dispatch('handleAuthStateChange');
+            uploadBytes(storageRef(storage, 'images/'+ userId), userData.user_avatar)
+            .then((snapshot) => {
+              getDownloadURL(storageRef(storage, 'images/'+ userId))
+                .then((url) => {
+                  update(ref(db, 'users/' + userId),{
+                    image: url
+                  });
+                })
+                .catch((error) => {
+                  switch (error.code) {
+                    case 'storage/object-not-found':
+                      // File doesn't exist
+                      break;
+                    case 'storage/unauthorized':
+                      // User doesn't have permission to access the object
+                      break;
+                    case 'storage/canceled':
+                      // User canceled the upload
+                      break;
+
+                    // ...
+
+                    case 'storage/unknown':
+                      // Unknown error occurred, inspect the server response
+                      break;
+                  }
+                });
+            });
           })
           commit("SET_USER", response.user);
       })
@@ -169,6 +201,7 @@ export default createStore({
         }else {
           if(state.currentUser.uid){
             dispatch('updateUser', {
+              
               userId: state.currentUser.uid,
               updates: {
                 online: false
