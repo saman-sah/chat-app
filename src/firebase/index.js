@@ -28,12 +28,12 @@ import {
 
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAtU2w1igIhVOMWTHM77o0ypdeleKMALVg",
+  apiKey: "",
   authDomain: "chat-app-32eff.firebaseapp.com",
   projectId: "chat-app-32eff",
   storageBucket: "chat-app-32eff.appspot.com",
-  messagingSenderId: "733763316787",
-  appId: "1:733763316787:web:c979541c2829e29dbfc746"
+  messagingSenderId: "",
+  appId: ""
 };
 
 let firebaseApp = firebase.initializeApp(firebaseConfig);
